@@ -19,16 +19,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\Fractals\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="View\MainWindow.axaml.cs">
         <DependentUpon>MainWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="View\Card\Card.axaml.cs">
         <DependentUpon>Card.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="View\Views\PythagorasTree\PythagorasTreeView.axaml.cs">
+        <DependentUpon>PythagorasTreeView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
