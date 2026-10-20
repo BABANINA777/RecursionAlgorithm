@@ -1,0 +1,28 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:desktop="clr-namespace:RecursionAlgorithm"
+        xmlns:vm="clr-namespace:RecursionAlgorithm.ViewModels"
+        xmlns:views="clr-namespace:RecursionAlgorithm.View.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RecursionAlgorithm.MainWindow"
+        Title="BABANINA Production"
+        x:DataType="vm:MainWindowViewModel">
+    <Grid>
+        <!-- ЭКРАН 1: КАРТОЧКИ -->
+        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsCardsVisible}">
+            <desktop:Card DataContext="{Binding Cards[0]}" Margin="15" />
+            <desktop:Card DataContext="{Binding Cards[1]}" Margin="15" />
+            <desktop:Card DataContext="{Binding Cards[2]}" Margin="15" />
+            <desktop:Card DataContext="{Binding Cards[3]}" Margin="15" />
+        </WrapPanel>
+        
+        <!-- ЭКРАН 2: 4 КОНТЕЙНЕРА С АЛГОРИТМАМИ -->
+        <views:HanoiView IsVisible="{Binding IsHanoiVisible}" />
+        <views:PythagorasTreeView IsVisible="{Binding IsTreeVisible}" />
+        <views:KnapsackView IsVisible="{Binding IsKnapsackVisible}" />
+        <views:FastPowView IsVisible="{Binding IsFastPowVisible}" />
+    </Grid>
+    
+</Window>
