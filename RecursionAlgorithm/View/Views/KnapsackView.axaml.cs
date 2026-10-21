@@ -70,10 +70,10 @@ public partial class KnapsackView : UserControl
         BenchmarkPlot.Plot.Axes.Rules.Clear();
 
         // Тёмная тема графика
-        BenchmarkPlot.Plot.FigureBackground.Color = Color.FromHex("#1E1E24");
-        BenchmarkPlot.Plot.DataBackground.Color = Color.FromHex("#141418");
-        BenchmarkPlot.Plot.Axes.Color(Color.FromHex("#D1D5DB"));
-        BenchmarkPlot.Plot.Grid.MajorLineColor = Color.FromHex("#22FFFFFF");
+        BenchmarkPlot.Plot.FigureBackground.Color = Color.FromHex("#50505A");
+        BenchmarkPlot.Plot.DataBackground.Color = Color.FromHex("#3B3B44");
+        BenchmarkPlot.Plot.Axes.Color(Color.FromHex("#F3F4F6"));
+        BenchmarkPlot.Plot.Grid.MajorLineColor = Color.FromHex("#44FFFFFF");
 
         // Подписи осей
         BenchmarkPlot.Plot.XLabel("Размерность входных данных (N)");
