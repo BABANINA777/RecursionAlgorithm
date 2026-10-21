@@ -13,7 +13,7 @@ public class PythagorasTreeModel
     // Параметры дерева
     public float Angle { get; set; } = 45f;
     public int Depth { get; set; } = 10;
-    IBrush Brush;
+    IBrush Brush = Brushes.SaddleBrown;
     private static readonly IPen BorderPen = new Pen(Brushes.Black, 0.5);
 
     /// <summary>
