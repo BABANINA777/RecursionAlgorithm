@@ -7,7 +7,7 @@ public partial class AlgorithmCardViewModel : CardBaseViewModel, IAlgorithmCard
 {
     public int DefaultStartN { get; init; }
     public int DefaultEndN { get; init; }
-    public override string RangeText => $"Диапазон n: от {DefaultStartN} до {DefaultEndN}";
+    public override string RangeText => $"Число {DefaultStartN}, степень {DefaultEndN}";
 
     public AlgorithmCardViewModel(
         string title,

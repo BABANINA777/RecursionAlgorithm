@@ -43,7 +43,7 @@ public partial class MainWindowViewModel : ObservableObject
             ["Ветвление"],
             ["O(2ⁿ)"],
             "#059669",
-            28f, 1f, 12,
+            45f, 1f, 10,
             OpenCard));
 
         // 3. Задача о рюкзаке (Алгоритм)
@@ -52,7 +52,7 @@ public partial class MainWindowViewModel : ObservableObject
             ["Рекурсивный", "Хвостовой"],
             ["O(2ⁿ)", "O(n)"],
             "#D97706",
-            1, 45,
+            15, 50,
             OpenCard));
 
         // 4. Быстрое возведение в степень (Алгоритм)
@@ -61,7 +61,7 @@ public partial class MainWindowViewModel : ObservableObject
             ["Бинарное возведение"],
             ["O(log n)"],
             "#2563EB",
-            1, 1000,
+            2, 64,
             OpenCard));
     }
 
