@@ -108,7 +108,7 @@ public class PythagorasTreeModel
         if (depth <= 1) return;
         // 3. Вычисляем вершину E треугольника над гипотенузой DC
         double dx = c.X - d.X;                                              // Вектор гипотенузы по X
-        double dy = c.Y - d.Y;                                              // Вектор гипотенузы по Y
+        double dy = c.Y - d.Y;                             // Вектор гипотенузы по Y
         double rad = Angle * Math.PI / 180.0;                               // Перевод угла в радианы
         double cosA = Math.Cos(rad);                                        // Косинус
         double sinA = Math.Sin(rad);                                        // Синус

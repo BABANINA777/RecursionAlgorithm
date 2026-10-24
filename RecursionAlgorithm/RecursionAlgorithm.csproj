@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net10.0</TargetFramework>
@@ -38,8 +38,8 @@
         <DependentUpon>HanoiView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="View\Views\PythagorasTree\PyfhagorasTreeControl\RecursionTreePT.axaml.cs">
-        <DependentUpon>RecursionTreePT.axaml</DependentUpon>
+      <Compile Update="View\Views\Common\RecursionTreeControl.axaml.cs">
+        <DependentUpon>RecursionTreeControl.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

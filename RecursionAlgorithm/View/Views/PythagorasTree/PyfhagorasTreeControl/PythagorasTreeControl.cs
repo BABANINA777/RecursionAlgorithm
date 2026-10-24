@@ -17,7 +17,7 @@ public class PythagorasTreeControl : Control
 {
     // Композиция: контрол содержит чистую модель как поле
     public PythagorasTreeModel Model { get; } = new();
-    public string[] RecursionCalls;
+    public string[] RecursionCalls = [];
     public PythagorasTreeControl(){ClipToBounds = true;}
     
     // =========================================================================
@@ -155,7 +155,7 @@ public class PythagorasTreeControl : Control
     /// </summary>
     /// <param name="context"></param>
     ///
-    public event Action RenderCompleted;
+    public event Action? RenderCompleted;
     public override void Render(DrawingContext context)
     {
         base.Render(context);

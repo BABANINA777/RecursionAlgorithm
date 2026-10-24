@@ -6,7 +6,7 @@
              x:Class="RecursionAlgorithm.View.Views.PythagorasTreeView"
              xmlns:vm="clr-namespace:RecursionAlgorithm.ViewModels"
              xmlns:views="clr-namespace:RecursionAlgorithm.View.Views"
-             xmlns:pythagorasTree="clr-namespace:RecursionAlgorithm.View.Views.PythagorasTree"
+             xmlns:common="clr-namespace:RecursionAlgorithm.View.Views.Common"
              x:DataType="vm:MainWindowViewModel">
     <Grid RowDefinitions="Auto, *, Auto">
         <!--кнопки управления-->
@@ -52,7 +52,7 @@
         <!--Алгоритм-->
         <Grid Grid.Row="1" ColumnDefinitions="*, *">
             <views:PythagorasTreeControl x:Name="TreeControl" Grid.Column="0" />
-            <pythagorasTree:RecursionTreePT x:Name="RecursionControl" Grid.Column="1" />
+            <common:RecursionTreeControl x:Name="RecursionControl" Grid.Column="1" />
         </Grid>
         
         

@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="RecursionAlgorithm.View.Views.PythagorasTree.RecursionTreePT">
-    <Grid>
-        <Canvas x:Name="TreeCanvas" Width="2000" Height="1500" Background="Transparent" HorizontalAlignment="Left" 
+             x:Class="RecursionAlgorithm.View.Views.Common.RecursionTreeControl">
+    <Grid ClipToBounds="True">
+        <Canvas x:Name="TreeCanvas" Width="3000" Height="2000" Background="Transparent" HorizontalAlignment="Left" 
                 VerticalAlignment="Top"/>
     </Grid>
 </UserControl>
