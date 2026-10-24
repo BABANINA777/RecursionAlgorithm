@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
 
 namespace RecursionAlgorithm.Models;
 
 public class KnapsackModel
 {
+    // Логирование рекурсии
+    private int _currentId = 1;
+    public List<string> RecursionCalls { get; } = new();
+
     // Входные параметры
     private int _maxWeight;
     private int _nSize;
@@ -12,9 +17,9 @@ public class KnapsackModel
     private double[] _weight = [];
     private double[] _cost = [];
 
-    // Результаты работы алгоритма (доступны для чтения извне)
+    // Результаты работы алгоритма
     public double BestCost { get; private set; }
-    public long RecursionSteps { get; private set; } // long, так как шагов может быть очень много
+    public long RecursionSteps { get; private set; }
 
     public KnapsackModel(int max_weight, int nSize)
     {
@@ -44,28 +49,42 @@ public class KnapsackModel
         for (int i = 0; i < _weight.Length; i++)
         {
             _weight[i] = min + random.NextDouble() * (max - min);
-            _cost[i] = (min * 1000) + random.NextDouble() * (1000 * (max - min));
+            _cost[i] = (min + 1000) + random.NextDouble() * (1000 + (max - min));
         }
     }
 
-    // Публичный метод запуска алгоритма
     public void RunAlgorithm()
     {
-        // Сбрасываем показатели перед новым запуском
+        // 1. Очищаем показатели и сбрасываем счетчик вызовов
+        RecursionCalls.Clear();
+        _currentId = 1;
         BestCost = 0;
         RecursionSteps = 0;
 
-        // Запускаем рекурсию с 0-го предмета, с нулевым текущим весом и стоимостью
-        SolveRecursive(0, 0, 0);
+        // 2. Глубина корня равна общему числу шагов + 1
+        int initialDepth = _nSize + 1;
+
+        // 3. Запуск рекурсии с нулевого предмета
+        SolveRecursive(
+            index: 0,
+            currentWeight: 0,
+            currentCost: 0,
+            parentId: 0,
+            depth: initialDepth,
+            branch: "Root"
+        );
     }
 
-    // Приватный рекурсивный метод перебора подмножеств
-    private void SolveRecursive(int index, double currentWeight, double currentCost)
+    private void SolveRecursive(int index, double currentWeight, double currentCost, int parentId, int depth, string branch)
     {
-        // Фиксируем каждый заход в рекурсивный метод
         RecursionSteps++;
+        int myId = _currentId++;
 
-        // Базовый случай: дошли до конца массива предметов
+        // Формируем краткую запись: K(номер_предмета, текущий_вес)
+        string customInfo = $"K(i={index}, W={currentWeight:F0})";
+        RecursionCalls.Add($"{myId};{parentId};{depth};{branch};{customInfo}");
+
+        // Базовый случай: перебрали все предметы
         if (index == _nSize)
         {
             if (currentCost > BestCost)
@@ -75,13 +94,13 @@ public class KnapsackModel
             return;
         }
 
-        // Ветка 1: НЕ берем текущий предмет и идем дальше
-        SolveRecursive(index + 1, currentWeight, currentCost);
+        // Ветка 1 (Left): НЕ берем текущий предмет
+        SolveRecursive(index + 1, currentWeight, currentCost, myId, depth - 1, "Left");
 
-        // Ветка 2: БЕРЕМ текущий предмет (только если он влезает в рюкзак по весу)
+        // Ветка 2 (Right): БЕРЕМ текущий предмет (только если влезает по весу)
         if (currentWeight + _weight[index] <= _maxWeight)
         {
-            SolveRecursive(index + 1, currentWeight + _weight[index], currentCost + _cost[index]);
+            SolveRecursive(index + 1, currentWeight + _weight[index], currentCost + _cost[index], myId, depth - 1, "Right");
         }
     }
 }

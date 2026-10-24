@@ -25,74 +25,83 @@ public partial class RecursionTreeControl : UserControl
     }
 
     public void RenderRecursionTree()
+{
+    TreeCanvas.Children.Clear();
+
+    if (RecursionCalls == null || RecursionCalls.Length == 0)
+        return;
+
+    // Подготовка данных
+    var nodes = RecursionCalls.Select(ParseText).ToList();
+    if (nodes.Count == 0)
+        return;
+
+    var dictNodes = new Dictionary<int, Point>();
+    double levelHeight = 70;       // Расстояние между уровнями по вертикали
+    int maxDepth = nodes[0].depth; // Глубина корня
+
+    // 1. Потолок отображения (5 уровней)
+    const int maxAllowedLevel = 7;
+
+    // 2. Считаем фактическую максимальную глубину данных, но не больше потолка
+    int actualMaxLevel = nodes.Max(n => maxDepth - n.depth);
+    int targetMaxLevel = Math.Clamp(actualMaxLevel, 1, maxAllowedLevel);
+
+    // 3. Минимальный шаг между центрами карточек на самом дне (90-100 px гарантирует зазор)
+    const double minSpacing = 100;
+
+    // Создание корневого узла
+    var rootBlock = CreateTextBlock(nodes[0].description, nodes[0].branch);
+    double parentTop = 100;
+    double parentLeft = TreeCanvas.Width > 0 ? TreeCanvas.Width / 2.0 : 1200;
+
+    Canvas.SetTop(rootBlock, parentTop);
+    Canvas.SetLeft(rootBlock, parentLeft);
+    TreeCanvas.Children.Add(rootBlock);
+    dictNodes[nodes[0].my_id] = new Point(parentLeft, parentTop);
+
+    foreach (var item in nodes.Skip(1))
     {
-        TreeCanvas.Children.Clear();
+        int level = maxDepth - item.depth;
 
-        if (RecursionCalls == null || RecursionCalls.Length == 0)
-            return;
+        // Отсекаем всё, что глубже 5-го уровня (кроме линейных вызовов Center)
+        if (item.branch != "Center" && level > maxAllowedLevel)
+            continue;
 
-        // Подготовка данных
-        var nodes = RecursionCalls.Select(ParseText).ToList();
-        if (nodes.Count == 0)
-            return;
+        if (item.parent_id == 0 || !dictNodes.TryGetValue(item.parent_id, out Point parentPoint))
+            continue;
 
-        var dictNodes = new Dictionary<int, Point>();
-        double levelHeight = 70; // Расстояние между уровнями по вертикали
-        int maxDepth = nodes[0].depth; // Максимальная глубина (глубина корня)
+        double y = parentPoint.Y + levelHeight;
+        double x;
 
-        // Создание корневого узла
-        var rootBlock = CreateTextBlock(nodes[0].description, nodes[0].branch);
-        double parentTop = 100;
-        double parentLeft = TreeCanvas.Width / 2.0;
+        // Адаптивная формула: на нижнем уровне шаг = 50px (между соседями 100px),
+        // а выше умножается на 2 ровно столько раз, сколько уровней реально строится.
+        double stepX = (minSpacing / 2.0) * Math.Pow(2, targetMaxLevel - level);
 
-        Canvas.SetTop(rootBlock, parentTop);
-        Canvas.SetLeft(rootBlock, parentLeft);
-        TreeCanvas.Children.Add(rootBlock);
-        dictNodes[nodes[0].my_id] = new Point(parentLeft, parentTop);
-
-        foreach (var item in nodes.Skip(1))
+        if (item.branch == "Left")
         {
-            // Ограничение глубины для ветвящихся деревьев (Left/Right), чтобы не перегружать экран
-            int level = maxDepth - item.depth;
-            if (item.branch != "Center" && level > 4)
-                continue;
-
-            // Если родитель не найден — пропускаем
-            if (item.parent_id == 0 || !dictNodes.TryGetValue(item.parent_id, out Point parentPoint))
-                continue;
-
-            // Координата Y всегда смещается вниз от родителя
-            double y = parentPoint.Y + levelHeight;
-            double x;
-
-            // Координата X зависит от стороны ветвления
-            double stepX = 80 * Math.Pow(2, Math.Max(0, 4 - level));
-            if (item.branch == "Left")
-            {
-                x = parentPoint.X - stepX;
-            }
-            else if (item.branch == "Right")
-            {
-                x = parentPoint.X + stepX;
-            }
-            else // "Center" или по центру (для линейной цепи вызовов, например быстрого возведения)
-            {
-                x = parentPoint.X;
-            }
-
-            dictNodes[item.my_id] = new Point(x, y);
-
-            // Создаем плашку узла
-            var textBlock = CreateTextBlock(item.description, item.branch);
-            Canvas.SetTop(textBlock, y);
-            Canvas.SetLeft(textBlock, x);
-            TreeCanvas.Children.Add(textBlock);
-
-            // Создаем соединительную стрелку от родителя к потомку
-            var line = CreateArrow(parentPoint, new Point(x, y));
-            TreeCanvas.Children.Add(line);
+            x = parentPoint.X - stepX;
         }
+        else if (item.branch == "Right")
+        {
+            x = parentPoint.X + stepX;
+        }
+        else // "Center" (для FastPow)
+        {
+            x = parentPoint.X;
+        }
+
+        dictNodes[item.my_id] = new Point(x, y);
+
+        var textBlock = CreateTextBlock(item.description, item.branch);
+        Canvas.SetTop(textBlock, y);
+        Canvas.SetLeft(textBlock, x);
+        TreeCanvas.Children.Add(textBlock);
+
+        var line = CreateArrow(parentPoint, new Point(x, y));
+        TreeCanvas.Children.Add(line);
     }
+}
 
     private Control CreateTextBlock(string text, string branch = "Root")
     {
@@ -181,14 +190,16 @@ public partial class RecursionTreeControl : UserControl
     /// </summary>
     private ParseLogText ParseText(string text)
     {
-        string[] textarray = text.Split(";");
-        int myId = int.Parse(textarray[0]);
-        int parentId = int.Parse(textarray[1]);
-        int depth = int.Parse(textarray[2]);
-        string branch = textarray.Length > 3 ? textarray[3] : "Root";
-        string? customInfo = textarray.Length >= 5 ? textarray[4] : null;
+        string[] parts = text.Split(';');
+        int my_id = int.Parse(parts[0]);
+        int parent_id = int.Parse(parts[1]);
+        int depth = int.Parse(parts[2]);
+        string branch = parts[3];
 
-        return new ParseLogText(myId, parentId, depth, branch, customInfo);
+        // Если 5-й параметр передан — берем его, иначе используем стандартный формат
+        string description = parts.Length > 4 ? parts[4] : $"Глубина: {depth}, №{my_id}";
+
+        return new ParseLogText(my_id, parent_id, depth, branch, description);
     }
 
     #region Обработка мыши: панорамирование и зум в точку курсора

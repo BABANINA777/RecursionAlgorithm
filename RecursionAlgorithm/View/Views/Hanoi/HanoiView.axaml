@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RecursionAlgorithm.ViewModels"
              xmlns:views="clr-namespace:RecursionAlgorithm.View.Views"
+             xmlns:common="clr-namespace:RecursionAlgorithm.View.Views.Common"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="650"
              x:Class="RecursionAlgorithm.View.Views.HanoiView"
              x:Name="Root"
@@ -20,15 +21,20 @@
                        FontSize="26" FontWeight="SemiBold" Foreground="#A78BFA"/>
         </Grid>
 
-        <Border Grid.Row="1" Margin="20,0,20,15" Background="#1E1E24" CornerRadius="12"
-                BorderBrush="#33FFFFFF" BorderThickness="1" ClipToBounds="True">
-            <Grid RowDefinitions="*,Auto">
-                <views:HanoiControl x:Name="HanoiBoard" DiskCount="5" StateChanged="OnStateChanged"/>
-                <TextBlock Grid.Row="1" Margin="0,0,0,14" HorizontalAlignment="Center"
-                           Text="A — начальная башня     B — вспомогательная     C — целевая башня"
-                           Foreground="#A0A0B2" FontSize="13"/>
-            </Grid>
-        </Border>
+        <Grid Grid.Row="1" ColumnDefinitions="*, *">
+            <Border Grid.Row="0" Margin="20,0,20,15" Background="#1E1E24" CornerRadius="12"
+                    BorderBrush="#33FFFFFF" BorderThickness="1" ClipToBounds="True">
+                <Grid RowDefinitions="*,Auto">
+                    <views:HanoiControl x:Name="HanoiBoard" DiskCount="5" StateChanged="OnStateChanged"/>
+                    <TextBlock Grid.Row="1" Margin="0,0,0,14" HorizontalAlignment="Center"
+                               Text="A — начальная башня     B — вспомогательная     C — целевая башня"
+                               Foreground="#A0A0B2" FontSize="13"/>
+                </Grid>
+            </Border>
+            <common:RecursionTreeControl x:Name="RecursionControl" Grid.Column="1" />
+            
+        </Grid>
+        
 
         <Border Grid.Row="2" Margin="20,0,20,20" Padding="16,12" Background="#1E1E24"
                 BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="12">

@@ -7,6 +7,7 @@
              x:Name="KnapsackRoot"
              xmlns:vm="clr-namespace:RecursionAlgorithm.ViewModels"
              xmlns:avalonia="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+             xmlns:common="clr-namespace:RecursionAlgorithm.View.Views.Common"
              x:DataType="vm:MainWindowViewModel">
     <Grid RowDefinitions="Auto, *, Auto">
         <!-- ВЕРХНЯЯ ПАНЕЛЬ: Кнопка назад и заголовок -->
@@ -50,9 +51,13 @@
         </Grid>
         
         <!-- ГРАФИК -->
-        <Border Grid.Row="1" Margin="20,0,20,15" Background="#1E1E24" CornerRadius="12" ClipToBounds="True">
-            <avalonia:AvaPlot Name="BenchmarkPlot" />
-        </Border>
+        <Grid Grid.Row="1" ColumnDefinitions="*, *">
+            <Border Grid.Row="1" Margin="20,0,20,15" Background="#1E1E24" CornerRadius="12" ClipToBounds="True">
+                <avalonia:AvaPlot Name="BenchmarkPlot" />
+            </Border>
+            <common:RecursionTreeControl x:Name="RecursionControl" Grid.Column="1" />
+        </Grid>
+        
         
         <!-- НИЖНЯЯ ПАНЕЛЬ УПРАВЛЕНИЯ -->
         <Border Grid.Row="2" 

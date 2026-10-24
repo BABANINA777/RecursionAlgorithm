@@ -11,6 +11,7 @@ namespace RecursionAlgorithm.View.Views;
 /// <summary>Визуальный адаптер модели Ханойских башен.</summary>
 public sealed class HanoiControl : Control
 {
+    public string[] RecursionCalls = [];//лог выполнения
     public static readonly StyledProperty<int> DiskCountProperty =
         AvaloniaProperty.Register<HanoiControl, int>(nameof(DiskCount), 5);
 
@@ -85,6 +86,7 @@ public sealed class HanoiControl : Control
         CurrentMove++;
     }
 
+    public event Action? RenderCompleted;
     public override void Render(DrawingContext context)
     {
         base.Render(context);
@@ -136,5 +138,12 @@ public sealed class HanoiControl : Control
                     new Rect(x, y, diskWidth, diskHeight - 2), 7, 7);
             }
         }
+        
+        RecursionCalls = Model.RecursionCalls.ToArray();
+        // Говорим диспетчеру: вызови событие ТОЛЬКО ПОСЛЕ того, как кадр полностью отрисуется
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            RenderCompleted?.Invoke();
+        }, Avalonia.Threading.DispatcherPriority.Background);
     }
 }

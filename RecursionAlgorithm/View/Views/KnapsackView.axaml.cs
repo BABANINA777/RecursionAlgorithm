@@ -125,6 +125,7 @@ public partial class KnapsackView : UserControl
 
         BenchmarkPlot.Plot.Axes.AutoScale();
         BenchmarkPlot.Refresh();
+        DrawRecursionTree();
     }
 
     private void OnParameterChanged()
@@ -149,5 +150,12 @@ public partial class KnapsackView : UserControl
         {
             RunButton_Click(sender, e);
         }
+    }
+    
+    public void DrawRecursionTree()
+    {
+        RecursionControl.RecursionCalls = _model.RecursionCalls.ToArray();
+        RecursionControl.RenderRecursionTree();
+
     }
 }

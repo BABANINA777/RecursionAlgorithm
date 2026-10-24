@@ -25,6 +25,7 @@ public partial class FastPowView : UserControl
             _isInitialized = true;
             DrawGraph();
         };
+        
     }
 
     private void OnPlotPointerMoved(object? sender, PointerEventArgs e)
@@ -66,6 +67,7 @@ public partial class FastPowView : UserControl
         scatter.MarkerSize = maxExponent <= 200 ? 5 : 0;
         BenchmarkPlot.Plot.Axes.AutoScale();
         BenchmarkPlot.Refresh();
+        DrawRecursionTree();
     }
 
     private void RunButton_Click(object? sender, RoutedEventArgs e) => DrawGraph();
@@ -74,5 +76,11 @@ public partial class FastPowView : UserControl
     {
         if (e.Key == Key.Enter)
             DrawGraph();
+    }
+    public void DrawRecursionTree()
+    {
+        RecursionControl.RecursionCalls = _model.RecursionCalls.ToArray();
+        RecursionControl.RenderRecursionTree();
+
     }
 }

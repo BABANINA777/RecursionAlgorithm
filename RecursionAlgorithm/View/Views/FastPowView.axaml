@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RecursionAlgorithm.ViewModels"
              xmlns:avalonia="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+             xmlns:common="clr-namespace:RecursionAlgorithm.View.Views.Common"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="650"
              x:Class="RecursionAlgorithm.View.Views.FastPowView"
              x:Name="Root" x:DataType="vm:MainWindowViewModel">
@@ -18,9 +19,13 @@
                        FontSize="26" FontWeight="SemiBold" Foreground="#60A5FA"/>
         </Grid>
 
-        <Border Grid.Row="1" Margin="20,0,20,15" Background="#1E1E24" CornerRadius="12" ClipToBounds="True">
-            <avalonia:AvaPlot x:Name="BenchmarkPlot"/>
-        </Border>
+        <Grid Grid.Row="1" ColumnDefinitions="*, *">
+            <Border Grid.Row="0" Margin="20,0,20,15" Background="#1E1E24" CornerRadius="12" ClipToBounds="True">
+                <avalonia:AvaPlot x:Name="BenchmarkPlot"/>
+            </Border>
+            <common:RecursionTreeControl x:Name="RecursionControl" Grid.Column="1" />
+        </Grid>
+        
 
         <Border Grid.Row="2" Margin="20,0,20,20" Padding="16,12" Background="#1E1E24"
                 BorderBrush="#33FFFFFF" BorderThickness="1" CornerRadius="12">

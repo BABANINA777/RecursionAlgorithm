@@ -11,6 +11,7 @@ public partial class HanoiView : UserControl
     {
         InitializeComponent();
         UpdateProgress();
+        HanoiBoard.RenderCompleted += DrawRecursionTree;
     }
 
     private void OnDiskCountTextChanged(object? sender, TextChangedEventArgs e)
@@ -43,5 +44,11 @@ public partial class HanoiView : UserControl
     {
         if (HanoiBoard is not null)
             ProgressText.Text = $"Ход {HanoiBoard.CurrentMove} из {HanoiBoard.Model.MinimumMoveCount:N0} · рекурсивных вызовов: {HanoiBoard.Model.RecursiveCalls:N0}";
+    }
+    public void DrawRecursionTree()
+    {
+        RecursionControl.RecursionCalls = HanoiBoard.RecursionCalls;
+        RecursionControl.RenderRecursionTree();
+
     }
 }
