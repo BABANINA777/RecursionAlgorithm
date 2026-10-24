@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
 
@@ -10,6 +11,10 @@ namespace RecursionAlgorithm.Models.FractalLogic;
 /// </summary>
 public class PythagorasTreeModel
 {
+    //список рекурсивных вызовов
+    private int _currentId = 0;
+    public List<string> RecursionCalls = new List<string>(); 
+    
     // Параметры дерева
     public float Angle { get; set; } = 45f;
     public int Depth { get; set; } = 10;
@@ -29,7 +34,9 @@ public class PythagorasTreeModel
         double groundY = bounds.Height - 35;
         Point a = new Point(centerX - side / 2.0, groundY);
         Point b = new Point(centerX + side / 2.0, groundY);
-        DrawTree(context, a, b, Depth);
+        RecursionCalls.Clear();// отчиста списка логов
+        _currentId = 0;
+        DrawTree(context, a, b, Depth, 0, "Root");
         
         
     }
@@ -84,13 +91,19 @@ public class PythagorasTreeModel
     }
 
 
-    private void DrawTree(DrawingContext context, Point a, Point b, int depth)
+    private void DrawTree(DrawingContext context, Point a, Point b, int depth, int parant_id, string branch)
     {
+        
+        
+        int my_id = ++_currentId;
+        RecursionCalls.Add($"{my_id};{parant_id};{depth};{branch}");
+        //устанавливаем цвет кистьи
         SetBrush(depth);
         if (depth <= 0)
         {
             return;
         }
+        //рисуем квадрат
         var (d, c) = DrawingSquare(a, b, context);
         if (depth <= 1) return;
         // 3. Вычисляем вершину E треугольника над гипотенузой DC
@@ -106,8 +119,8 @@ public class PythagorasTreeModel
         // 4. Отрисовываем треугольник
         DrawingTriangle(d, c, e, context);
         // 5. Рекурсивное ветвление на катетах треугольника
-        DrawTree(context, d, e, depth - 1);                                 // Левая ветвь на отрезке DE
-        DrawTree(context, e, c, depth - 1);                                 // Правая ветвь на отрезке EC
+        DrawTree(context, d, e, depth - 1, my_id,"Left");                                 // Левая ветвь на отрезке DE
+        DrawTree(context, e, c, depth - 1, my_id, "Right");                                 // Правая ветвь на отрезке EC
         
     }
     private void SetBrush(int depth)// блок настройки кисти под текущую глубину

@@ -8,7 +8,7 @@ using RecursionAlgorithm.Models.FractalLogic;
 namespace RecursionAlgorithm.View.Views;
 
 /// <summary>
-/// Класс-прослойка (Адаптер) для Avalonia UI.
+/// элемент Avalonia UI.
 /// Задача этого класса — предоставить Avalonia точку входа в визуальное дерево (через Control)
 /// и передать DrawingContext в чистый класс модели по принципу КОМПОЗИЦИИ.
 /// Сам контрол не содержит алгоритмов и расчетов геометрии.
@@ -17,6 +17,7 @@ public class PythagorasTreeControl : Control
 {
     // Композиция: контрол содержит чистую модель как поле
     public PythagorasTreeModel Model { get; } = new();
+    public string[] RecursionCalls;
     public PythagorasTreeControl(){ClipToBounds = true;}
     
     // =========================================================================
@@ -148,6 +149,13 @@ public class PythagorasTreeControl : Control
         AngleProperty.Changed.AddClassHandler<PythagorasTreeControl>((control, e) => control.InvalidateVisual());
         DepthProperty.Changed.AddClassHandler<PythagorasTreeControl>((control, e) => control.InvalidateVisual());
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="context"></param>
+    ///
+    public event Action RenderCompleted;
     public override void Render(DrawingContext context)
     {
         base.Render(context);
@@ -159,7 +167,14 @@ public class PythagorasTreeControl : Control
             Model.Angle = Angle;
             Model.Depth = Depth;
             Model.Draw(context, Bounds);
+            RecursionCalls = Model.RecursionCalls.ToArray();
         }
-        
+        // Говорим диспетчеру: вызови событие ТОЛЬКО ПОСЛЕ того, как кадр полностью отрисуется
+        Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+        {
+            RenderCompleted?.Invoke();
+        }, Avalonia.Threading.DispatcherPriority.Background);
+    
     }
+    
 }

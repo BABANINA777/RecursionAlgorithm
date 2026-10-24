@@ -5,8 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="RecursionAlgorithm.View.Views.PythagorasTree.RecursionTreePT">
     <Grid>
-        <WrapPanel x:Name="Panel">
-            
-        </WrapPanel>
+        <Canvas x:Name="TreeCanvas" Width="2000" Height="1500" Background="Transparent" HorizontalAlignment="Left" 
+                VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

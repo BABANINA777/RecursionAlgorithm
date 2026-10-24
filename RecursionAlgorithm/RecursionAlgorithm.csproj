@@ -18,6 +18,7 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
         <PackageReference Include="ScottPlot" Version="5.1.59" />
         <PackageReference Include="ScottPlot.Avalonia" Version="5.1.59" />
+        
     </ItemGroup>
 
     <ItemGroup>
@@ -33,5 +34,17 @@
         <DependentUpon>PythagorasTreeView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="View\Views\Hanoi\HanoiView.axaml.cs">
+        <DependentUpon>HanoiView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="View\Views\PythagorasTree\PyfhagorasTreeControl\RecursionTreePT.axaml.cs">
+        <DependentUpon>RecursionTreePT.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
 </Project>
